@@ -1,0 +1,123 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Graph
+{
+    public:
+        float x_coord, y_coord;
+};
+
+bool compareTwoPointX(Graph point1, Graph point2)
+{
+    return (point1.x_coord < point2.x_coord);
+}
+
+bool compareTwoPointY(Graph point1, Graph point2)
+{
+    return (point1.y_coord < point2.y_coord);
+}
+
+void printElements(Graph points[])
+{
+    for (int i = 0; i < 100; i++)
+    {
+        cout << points[i].x_coord << " " << points[i].y_coord << "\n";
+    }
+}
+
+float min(float a, float b)
+{
+    float ret;
+    if(a<b){
+        ret=a;
+    }
+    ret=b;
+    return ret;
+}
+
+float distance(Graph point1, Graph point2)
+{
+    float ans;
+    ans=pow((point2.x_coord - point1.x_coord), 2) + pow((point2.y_coord - point1.y_coord), 2);
+    return sqrt(ans);
+}
+
+float closestPair(Graph points[], int Totalsize)
+{
+
+    float minValue = FLT_MAX;
+    if (Totalsize <= 3)
+    {
+        for (int i = 0; i < Totalsize; i++)
+            for (int j = i + 1; j < Totalsize; j++)
+                if (distance(points[i], points[j]) < minValue)
+                    minValue = distance(points[i], points[j]);
+
+        return minValue;
+    }
+
+    int mid = Totalsize / 2;
+    Graph middle = points[mid];
+
+    float left = closestPair(points, mid);
+    float right = closestPair(points + mid, Totalsize - mid);
+
+    float smallest_distance = min(left, right);
+
+    return smallest_distance;
+}
+
+float middleClosest(Graph middlePoints[], int size, float smallest_distance)
+{
+    float min = smallest_distance;
+
+    sort(middlePoints, middlePoints + size, compareTwoPointY);
+
+    for (int i = 0; i < size; ++i)
+        for (int j = i + 1; j < size && (middlePoints[j].y_coord - middlePoints[i].y_coord) < min; ++j)
+            if (distance(middlePoints[i], middlePoints[j]) < min)
+                min = distance(middlePoints[i], middlePoints[j]);
+
+    return min;
+}
+
+float middlePoints(Graph points[], int size, int smallest_distance)
+{
+    Graph mid = points[size / 2];
+
+    Graph middlePoints[size];
+    int j = 0;
+    for (int i = 0; i < size; i++)
+        if (abs(points[i].x_coord - mid.x_coord) < smallest_distance)
+        {
+            middlePoints[j] = points[i];
+            j++;
+        }
+
+    return middleClosest(middlePoints, j, smallest_distance);
+}
+
+int main()
+{
+    srand((unsigned int)time(0));
+    Graph randomPoints[100];
+
+    for (int i = 0; i < 100; i++)
+    {
+        randomPoints[i].x_coord = rand() % 100;
+        randomPoints[i].y_coord = rand() % 100;
+    }
+
+    sort(randomPoints, randomPoints + 100, compareTwoPointX);
+    printElements(randomPoints);
+
+    float smallest_number = closestPair(randomPoints, 100);
+    float middle_smallest = middlePoints(randomPoints, 100, smallest_number);
+
+    if (smallest_number < middle_smallest)
+        cout <<"\n"<<smallest_number;
+    else
+        cout <<"\n"<<middle_smallest;
+
+    return 0;
+}
