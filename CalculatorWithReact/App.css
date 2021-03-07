@@ -1,0 +1,44 @@
+.App {
+  text-align: center;
+}
+
+  
+.result {
+  height: 60px;
+  background-color: #3b5998;
+  width: 100%;
+}
+
+.result p {
+  font-size: 40px;
+  margin: 10px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.calculator-body {
+  max-width: 400px;
+  margin: auto;
+}
+
+.button {
+  display: block;
+  transition-duration: 0.7s;
+}
+
+button {
+  width: 25%; 
+  height: 60px;
+  font-size: 35px;
+  background-color: #3b5998;
+}
+
+button:hover {
+  background-color: #af4c96;
+  color: white;
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  
+}
+
+button:active{
+  transform: translateY(4px);
+}
